@@ -1,13 +1,13 @@
 variable "vpc_cidr" {}
 
 variable "public_subnets" {
-  type = "list"
+  type = list(string)
 }
 
 variable "private_subnets" {
-  type = "list"
+  type = list(string)
 }
 
 variable "az" {
-  type = "list"
+  type = list(string)
 }
