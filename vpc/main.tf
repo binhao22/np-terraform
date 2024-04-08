@@ -106,12 +106,13 @@ resource "aws_route_table" "public" {
 
 # 프라이빗 라우팅 테이블 생성
 resource "aws_route_table" "private" {
+  count = "${length(var.az)}"
   vpc_id = aws_vpc.this.id
 
   # 외부 트래픽, NAT 게이트웨이 지정
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.this.id
+    gateway_id = "${aws_nat_gateway.this.*.id[count.index]}"
   }
   # 내부 트래픽, 로컬
   route {
