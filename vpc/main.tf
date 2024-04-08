@@ -74,7 +74,7 @@ resource "aws_internet_gateway" "this" {
 # 고정 IP 생성
 resource"aws_eip" "this" {
     count = "${length(var.az)}"
-    vpc = true
+    domain = "vpc"
 }
 
 # NAT 게이트웨이 생성
