@@ -27,6 +27,12 @@ sg_ingress_pub = {
         protocol   = "tcp"
         cidr_block = "0.0.0.0/0"
     }
+    ssh = {
+        from_port = 22
+        to_port   = 22
+        protocol  = "tcp"
+        cidr_block = "0.0.0.0/0"
+    }
 }
 
 sg_ingress_pri = {
