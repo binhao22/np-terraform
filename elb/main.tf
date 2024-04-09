@@ -1,7 +1,7 @@
-# alb 생성
+# lb 생성
 resource "aws_lb" "this" {
-  load_balancer_type = "application"
-  internal           = false
+  load_balancer_type = var.lb_type
+  internal           = var.internal
   subnets            = var.subnets
   security_groups    = [ var.security_group ]
 
@@ -13,8 +13,8 @@ resource "aws_lb" "this" {
 # 타겟그룹 생성
 resource "aws_lb_target_group" "this" {
   vpc_id   = var.vpc_id
-  port     = 80
-  protocol = "HTTP"
+  port     = var.tg_port
+  protocol = var.tg_protocol
 
   health_check {
     path                = "/"
@@ -37,6 +37,7 @@ resource "aws_lb_listener" "this" {
   port              = 80
   protocol          = "HTTP"
 
+  # 5xx 장애 리턴
   default_action {
     type = "fixed-response"
 
@@ -55,7 +56,7 @@ resource "aws_lb_listener" "this" {
 # 리스너 룰 생성
 resource "aws_lb_listener_rule" "this" {
   listener_arn = aws_lb_listener.this.arn
-  priority = 100
+  priority     = 100
 
   condition {
     path_pattern {
@@ -63,6 +64,7 @@ resource "aws_lb_listener_rule" "this" {
     }
   }
 
+  # 타겟그룹으로 트래픽 전달
   action {
     type = "forward"
     target_group_arn = aws_lb_target_group.this.arn
