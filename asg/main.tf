@@ -18,7 +18,7 @@ resource "aws_autoscaling_group" "this" {
 
 # 시작템플릿 생성
 resource "aws_launch_configuration" "this" {
-  image_id        = ami-02ba6743e01b48cd5
+  image_id        = "ami-02ba6743e01b48cd5"
   instance_type   = "t2.micro"
   security_groups = [ var.security_group ]
 
