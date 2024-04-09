@@ -17,7 +17,7 @@ resource "aws_autoscaling_group" "this" {
 }
 
 # AMI 접근
-data "aws_ami" "centos-7" {
+data "aws_ami" "centos7" {
 owners      = ["679593333241"]
 most_recent = true
 
