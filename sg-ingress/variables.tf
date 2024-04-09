@@ -7,9 +7,9 @@ variable "to_port" {}
 variable "protocol" {}
 
 variable "cidr_block" {
-    default = null
+    default = ""
 }
 
 variable "source_sg" {
-    default = null
+    default = ""
 }
