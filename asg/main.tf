@@ -10,7 +10,8 @@ resource "aws_autoscaling_group" "this" {
   max_size = 2
 
   tag {
-    Name = "np-asg"
+    key = "Name"
+    value = "np-asg"
     propagate_at_launch = true
   }
 }
@@ -19,7 +20,7 @@ resource "aws_autoscaling_group" "this" {
 data "aws_ami" "centos7" {
   most_recent = true
   owners = ["679593333241"]
-  
+
   filter {
     name   = "name"
     values = ["CentOS Linux 7*x86_64*"]
