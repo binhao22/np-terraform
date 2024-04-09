@@ -47,7 +47,7 @@ module "sg-ingress-pri" {
 module "alb" {
   source          = "./elb"
 
-  vpc_id   = module.vpc.vpc_id
+  vpc_id          = module.vpc.vpc_id
   security_group  = module.sg["pub"].id
-  subnets  = [module.vpc.public_subnets_ids[0], module.vpc.public_subnets_ids[1]]
+  subnets         = module.vpc.public_subnets_ids
 }

@@ -7,5 +7,5 @@ output "private_subnets_ids" {
 }
 
 output "public_subnets_ids" {
-  value = [ aws_subnet.public.*.id ]
+  value = flatten(["${aws_subnet.public.*.id}"])
 }
