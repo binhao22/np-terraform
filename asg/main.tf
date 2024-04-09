@@ -25,7 +25,6 @@ resource "aws_launch_configuration" "this" {
   user_data = <<-EOF
               #!/bin/bash
               sudo yum update -y
-              sudo vi /etc/yum.repos.d/nginx.repo
               sudo yum install nginx -y 
               sudo systemctl enable nginx
               sudo systemctl start nginx
