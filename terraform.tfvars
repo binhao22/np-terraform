@@ -19,13 +19,13 @@ sg_ingress_pub = {
         from_port  = 80
         to_port    = 80
         protocol   = "tcp"
-        cidr_block = [ "0.0.0.0/0" ]
+        cidr_block = "0.0.0.0/0"
     }
     https = {
         from_port  = 443
         to_port    = 443
         protocol   = "tcp"
-        cidr_block = [ "0.0.0.0/0" ]
+        cidr_block = "0.0.0.0/0"
     }
 }
 
