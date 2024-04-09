@@ -7,7 +7,7 @@ resource "aws_vpc" "this" {
   }
 }
 
-# NACL 생성
+# 기본 NACL 생성
 resource "aws_default_network_acl" "default" {
   default_network_acl_id = aws_vpc.this.default_network_acl_id
 
@@ -28,6 +28,7 @@ resource "aws_default_network_acl" "default" {
     to_port    = 0
   }
 
+  # 서브넷 매핑
   subnet_ids = flatten([
     "${aws_subnet.public.*.id}",
     "${aws_subnet.private.*.id}",
@@ -40,10 +41,10 @@ resource "aws_default_network_acl" "default" {
 
 # 퍼블릭 서브넷 생성
 resource "aws_subnet" "public" {
-  count = "${length(var.public_subnets)}"
-  vpc_id            = "${aws_vpc.this.id}"
-  cidr_block        = "${var.public_subnets[count.index]}"
-  availability_zone = "${var.az[count.index]}"
+  count             = length(var.public_subnets)
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = var.public_subnets[count.index]
+  availability_zone = var.az[count.index]
  
   tags = {
     Name = "np-pub-sub"
@@ -52,10 +53,10 @@ resource "aws_subnet" "public" {
 
 # 프라이빗 서브넷 생성
 resource "aws_subnet" "private" {
-  count = "${length(var.private_subnets)}"
-  vpc_id            = "${aws_vpc.this.id}"
-  cidr_block        = "${var.private_subnets[count.index]}"
-  availability_zone = "${var.az[count.index]}"
+  count             = length(var.private_subnets)
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = var.private_subnets[count.index]
+  availability_zone = var.az[count.index]
  
   tags = {
     Name = "np-pri-sub"
@@ -73,27 +74,27 @@ resource "aws_internet_gateway" "this" {
 
 # 고정 IP 생성
 resource"aws_eip" "this" {
-    count = "${length(var.az)}"
+    count  = length(var.az)
     domain = "vpc"
 }
 
 # NAT 게이트웨이 생성
 resource "aws_nat_gateway" "this" {
-  count = "${length(var.az)}"
-  allocation_id = "${aws_eip.this.*.id[count.index]}"
-  subnet_id     = "${aws_subnet.public.*.id[count.index]}"
+  count         = length(var.az)
+  allocation_id = aws_eip.this.*.id[count.index]
+  subnet_id     = aws_subnet.public.*.id[count.index]
 }
 
 # 퍼블릭 라우팅 테이블 생성
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
 
-  # 외부 트래픽, 인터넷 게이트웨이 지정
+  # 외부 트래픽 규칙, 인터넷 게이트웨이 지정
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.this.id
   }
-  # 내부 트래픽, 로컬
+  # 내부 트래픽 규칙, 로컬
   route {
     cidr_block = var.vpc_cidr
     gateway_id = "local"
@@ -106,15 +107,15 @@ resource "aws_route_table" "public" {
 
 # 프라이빗 라우팅 테이블 생성
 resource "aws_route_table" "private" {
-  count = "${length(var.az)}"
+  count  = length(var.az)
   vpc_id = aws_vpc.this.id
 
-  # 외부 트래픽, NAT 게이트웨이 지정
+  # 외부 트래픽 규칙, NAT 게이트웨이 지정
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_nat_gateway.this.*.id[count.index]}"
+    gateway_id = aws_nat_gateway.this.*.id[count.index]
   }
-  # 내부 트래픽, 로컬
+  # 내부 트래픽 규칙, 로컬
   route {
     cidr_block = var.vpc_cidr
     gateway_id = "local"
@@ -125,14 +126,16 @@ resource "aws_route_table" "private" {
   }
 }
 
+# 퍼블릭 서브넷 + 라우팅 테이블
 resource "aws_route_table_association" "public" {
-  count = "${length(var.public_subnets)}"
-  subnet_id      = "${aws_subnet.public.*.id[count.index]}"
-  route_table_id = "${aws_route_table.public.id}"
+  count          = length(var.public_subnets)
+  subnet_id      = aws_subnet.public.*.id[count.index]
+  route_table_id = aws_route_table.public.id
 }
 
+# 프라이빗 서브넷 + 라우팅 테이블
 resource "aws_route_table_association" "private" {
-  count = "${length(var.private_subnets)}"
-  subnet_id      = "${aws_subnet.private.*.id[count.index]}"
-  route_table_id = "${aws_route_table.private.*.id[count.index]}"
+  count          = length(var.private_subnets)
+  subnet_id      = aws_subnet.private.*.id[count.index]
+  route_table_id = aws_route_table.private.*.id[count.index]
 }
