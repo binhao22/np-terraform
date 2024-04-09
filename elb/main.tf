@@ -2,7 +2,7 @@
 resource "aws_lb" "this" {
   load_balancer_type = "application"
   internal           = false
-  subnets            = var.subnets
+  subnets            = [var.subnets]
   security_groups    = [var.security_group]
 
   tags = {
