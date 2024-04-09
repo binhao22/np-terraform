@@ -2,7 +2,7 @@
 module "vpc" {
   source          = "./vpc"
 
-  vpc_cidr        = "10.0.0.0/16"
+  vpc_cidr        = var.vpc_cidr
   az              = ["a", "c"]
   public_subnets  = ["10.0.0.0/20", "10.0.16.0/20"]
   private_subnets = ["10.0.128.0/20", "10.0.144.0/20"]
@@ -14,7 +14,7 @@ module "sg" {
 
   for_each = var.sg_def
   sg_name  = each.value.sg_name
-  vpc_id   = module.vpc.vpc_cidr
+  vpc_id   = var.vpc_cidr
 }
 
 # SG-pub inbound rule
