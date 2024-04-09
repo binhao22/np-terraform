@@ -56,7 +56,7 @@ module "alb" {
 module "asg" {
   source     = "./asg"
 
-  lb_tg = module.elb.lb_tg
+  lb_tg = module.alb.lb_tg
   subnets = module.vpc.private_subnets_ids
   security_group  = module.sg["pri"].id
 }
