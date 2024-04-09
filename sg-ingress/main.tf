@@ -2,8 +2,8 @@
 
 # cidr 기반 인바운드 규칙
 resource "aws_security_group_rule" "inbound-cidr" {
-  # source_sg 변수에 값이 있을 때, cidr 기반 규칙 생성
-  count             = 1 - var.source_sg
+  # cidr_block 변수에 값이 있을 때, cidr 기반 규칙 생성
+  count             = var.cidr_block != "" ? 1 : 0
 
   security_group_id = var.sg_id
   type              = "ingress"
@@ -15,8 +15,8 @@ resource "aws_security_group_rule" "inbound-cidr" {
 
 # sg 기반 인바운드 규칙
 resource "aws_security_group_rule" "inbound-sg" {
-  # cidr_block 변수에 값이 있을 때, cidr 기반 규칙 생성
-  count                    = 1 - var.cidr_block
+  # source_sg 변수에 값이 있을 때, sg 기반 규칙 생성
+  count                    = var.source_sg != "" ? 1 : 0
 
   security_group_id        = var.sg_id
   type                     = "ingress"
