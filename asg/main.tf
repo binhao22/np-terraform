@@ -16,30 +16,9 @@ resource "aws_autoscaling_group" "this" {
   }
 }
 
-# AMI 접근
-data "aws_ami" "centos-7" {
-owners      = ["679593333241"]
-most_recent = true
-
-  filter {
-      name   = "name"
-      values = ["CentOS Linux 7 x86_64 HVM EBS *"]
-  }
-
-  filter {
-      name   = "architecture"
-      values = ["x86_64"]
-  }
-
-  filter {
-      name   = "root-device-type"
-      values = ["ebs"]
-  }
-}
-
 # 시작템플릿 생성
 resource "aws_launch_configuration" "this" {
-  image_id        = data.aws_ami.centos-7.id
+  image_id        = ami-02ba6743e01b48cd5
   instance_type   = "t2.micro"
   security_groups = [ var.security_group ]
 
