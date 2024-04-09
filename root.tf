@@ -45,7 +45,7 @@ module "sg-ingress-pri" {
 
 # elb module
 module "alb" {
-  source          = "./alb"
+  source          = "./elb"
 
   vpc_id   = module.vpc.vpc_id
   security_group  = module.sg["pub"].id
