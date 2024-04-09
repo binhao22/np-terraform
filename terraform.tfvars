@@ -6,10 +6,10 @@ region = "ap-northeast-2"
 ##################################
 sg_def = {
     pub = {
-        name = "np-sg-pub"
+        sg_name = "np-sg-pub"
     },
     pri = {
-        name = "np-sg-pri"
+        sg_name = "np-sg-pri"
     }
 }
 

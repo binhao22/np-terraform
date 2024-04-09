@@ -13,7 +13,7 @@ module "sg" {
   source   = "./sg"
 
   for_each = var.sg_def
-  name     = each.value.name
+  sg_name  = each.value.sg_name
   vpc_id   = module.vpc.vpc_cidr
 }
 
