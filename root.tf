@@ -19,7 +19,6 @@ module "sg" {
 
 # SG-pub inbound rule
 module "sg-ingress-pub" {
-  depends_on = [module.sg]
   source     = "./sg-ingress"
 
   for_each   = var.sg_ingress_pub
@@ -32,7 +31,6 @@ module "sg-ingress-pub" {
 
 # SG-pri inbound rule
 module "sg-ingress-pri" {
-  depends_on = [module.sg]
   source    = "./sg-ingress"
 
   for_each  = var.sg_ingress_pri
