@@ -16,6 +16,7 @@ resource "aws_security_group_rule" "inbound-cidr" {
 # sg 기반 인바운드 규칙
 resource "aws_security_group_rule" "inbound-sg" {
   # source_sg 변수에 값이 있을 때, sg 기반 규칙 생성
+  # count                  = var.source_sg != "" ? 1 : 0  ->  다른 모듈 생성 값을 참조하면 count 에러 발생
   count                    = var.cidr_block == "" ? 1 : 0
 
   security_group_id        = var.sg_id

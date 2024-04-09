@@ -1,4 +1,4 @@
-# VPC module
+# vpc module
 module "vpc" {
   source          = "./vpc"
 
@@ -8,16 +8,16 @@ module "vpc" {
   private_subnets = ["10.0.128.0/20", "10.0.144.0/20"]
 }
 
-# SG module
+# sg module
 module "sg" {
   source   = "./sg"
 
   for_each = var.sg_def
   sg_name  = each.value.sg_name
-  vpc_id   = var.vpc_cidr
+  vpc_id   = module.vpc.vpc_id
 }
 
-# SG-pub inbound rule
+# sg-ingress module
 module "sg-ingress-pub" {
   source     = "./sg-ingress"
 
@@ -29,7 +29,7 @@ module "sg-ingress-pub" {
   cidr_block = each.value.cidr_block  # null 허용
 }
 
-# SG-pri inbound rule
+# sg-ingress module
 module "sg-ingress-pri" {
   source    = "./sg-ingress"
 
@@ -41,4 +41,13 @@ module "sg-ingress-pri" {
   
   # 퍼블릭 보안그룹 트래픽만 허용
   source_sg = module.sg["pub"].id  # null 허용
+}
+
+# elb module
+module "alb" {
+  source          = "./alb"
+
+  vpc_id   = module.vpc.vpc_id
+  security_group  = module.sg["pub"].id
+  subnets  = module.vpc.public_subnets_ids
 }
