@@ -26,7 +26,7 @@ module "sg-ingress-pub" {
   from_port  = each.value.from_port
   to_port    = each.value.to_port
   protocol   = each.value.protocol
-  cidr_block = [each.value.cidr_block]
+  cidr_block = [each.value.cidr_block]  # null 허용
 }
 
 # SG-pri inbound rule
@@ -40,5 +40,5 @@ module "sg-ingress-pri" {
   protocol  = each.value.protocol
   
   # 퍼블릭 보안그룹 트래픽만 허용
-  source_sg = module.sg["pub"].id
+  source_sg = module.sg["pub"].id  # null 허용
 }

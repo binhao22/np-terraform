@@ -8,6 +8,9 @@ variable "protocol" {}
 
 variable "cidr_block" {
     type = list(string)
+    default = null
 }
 
-variable "source_sg" {}
+variable "source_sg" {
+    default = null
+}
