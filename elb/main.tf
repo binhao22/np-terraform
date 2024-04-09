@@ -1,8 +1,9 @@
 # alb 생성
 resource "aws_lb" "this" {
+  for_each           = toset(var.subnets)
   load_balancer_type = "application"
   internal           = false
-  subnets            = [ var.subnets ]
+  subnets            = each.value
   security_groups    = [ var.security_group ]
 
   tags = {
