@@ -51,3 +51,12 @@ module "alb" {
   security_group  = module.sg["pub"].id
   subnets         = module.vpc.public_subnets_ids
 }
+
+# asg module
+module "asg" {
+  source     = "./asg"
+
+  lb_tg = module.elb.lb_tg
+  subnets = module.vpc.private_subnets_ids
+  security_group  = module.sg["pri"].id
+}
