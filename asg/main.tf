@@ -9,11 +9,11 @@ resource "aws_autoscaling_group" "this" {
   min_size = 1
   max_size = 2
 
-  tag {
-    key = "Name"
-    value = "np-asg"
+  tags = {
+    Name = "np-asg"
     propagate_at_launch = true
   }
+
 }
 
 # AMI 접근
