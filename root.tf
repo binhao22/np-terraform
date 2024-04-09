@@ -49,5 +49,5 @@ module "alb" {
 
   vpc_id   = module.vpc.vpc_id
   security_group  = module.sg["pub"].id
-  subnets  = module.vpc.public_subnets_ids
+  subnets  = [module.vpc.public_subnets_ids[0], module.vpc.public_subnets_ids[1]]
 }
