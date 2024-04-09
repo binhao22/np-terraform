@@ -40,7 +40,8 @@ module "sg-ingress-pri" {
   to_port   = each.value.to_port
   protocol  = each.value.protocol
   
-  source_sg = each.value.source_sg
+  # 퍼블릭 sg 소스 허용
+  source_sg = module.sg["pub"].id
 }
 
 # elb module
