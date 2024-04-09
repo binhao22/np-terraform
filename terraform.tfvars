@@ -43,6 +43,6 @@ sg_ingress_pri = {
     ssh = {
         from_port = 22
         to_port   = 22
-        protocol  = "ssh"
+        protocol  = "tcp"
     }
 }
