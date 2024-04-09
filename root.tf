@@ -3,7 +3,7 @@ module "vpc" {
   source          = "./vpc"
 
   vpc_cidr        = var.vpc_cidr
-  az              = ["a", "c"]
+  az              = ["ap-northeast-2a", "ap-northeast-2c"]
   public_subnets  = ["10.0.0.0/20", "10.0.16.0/20"]
   private_subnets = ["10.0.128.0/20", "10.0.144.0/20"]
 }
