@@ -9,21 +9,21 @@ resource "aws_autoscaling_group" "this" {
   min_size = 1
   max_size = 2
 
-  tags = {
-    Name = "np-asg"
+  tag {
+    key = "Name"
+    value = "np-asg"
     propagate_at_launch = true
   }
-
 }
 
 # AMI 접근
 data "aws_ami" "centos7" {
-  most_recent = true
-  owners = ["679593333241"]
+  most_recent  = true
+  owners       = ["136693281018"]
 
   filter {
     name   = "name"
-    values = ["CentOS Linux 7*x86_64*"]
+    values = ["CentOS Linux 7 x86_64 HVM EBS ENA*"]
   }
 }
 
