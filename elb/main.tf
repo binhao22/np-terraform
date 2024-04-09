@@ -3,7 +3,7 @@ resource "aws_lb" "this" {
   for_each           = toset(var.subnets)
   load_balancer_type = "application"
   internal           = false
-  subnets            = each.value
+  subnets            = flatten([each.value])
   security_groups    = [ var.security_group ]
 
   tags = {
