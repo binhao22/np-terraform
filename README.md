@@ -1,6 +1,8 @@
 # np-terraform
 테라폼을 통한 EC2+ALB 웹서버 배포
 
+* VPC SG SG-ingress ASG ELB 5개 모듈
+
 1. **VPC 및 관련 리소스를 프로비저닝합니다.**
     1. VPC 및 기본 NACL 생성
     2. 2개의 AZ에 퍼블릭 및 프라이빗 서브넷 생성
